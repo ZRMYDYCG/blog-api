@@ -1,5 +1,7 @@
 import { Body, Controller, Get, HttpException, Post } from '@nestjs/common'
 import { AppService } from './app.service'
+import { ApiException } from './common/filter/http-exception/api.exception'
+import { ApiResponseCode } from './common/enums/api-response-code.enum'
 
 interface CreateCatDto {}
 
@@ -14,6 +16,6 @@ export class AppController {
 
   @Post()
   create(@Body() createCatDto: CreateCatDto) {
-    return 'ok'
+    throw new ApiException('该用户不存在', ApiResponseCode.USER_NOT_EXIST)
   }
 }

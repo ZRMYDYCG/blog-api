@@ -6,6 +6,7 @@ import { UserModule } from './user/user.module'
 import { User } from './user/entities/user.entity'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import * as path from 'path'
+import { JwtModule } from '@nestjs/jwt'
 
 const isProd = process.env.NODE_ENV === 'production'
 
@@ -36,6 +37,17 @@ const isProd = process.env.NODE_ENV === 'production'
         }
       },
       inject: [ConfigService],
+    }),
+    JwtModule.registerAsync({
+      global: true,
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory(configService: ConfigService) {
+        return {
+          secret: configService.get('JWT_SECRET'),
+          signOptions: { expiresIn: configService.get('JWT_EXPIRATION_TIME') },
+        }
+      },
     }),
   ],
   controllers: [AppController],

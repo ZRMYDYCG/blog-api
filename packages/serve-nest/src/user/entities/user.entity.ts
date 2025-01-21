@@ -1,6 +1,14 @@
-import { Column, Entity, PrimaryGeneratedColumn, BeforeInsert } from 'typeorm'
+import {
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  BeforeInsert,
+  ManyToMany,
+  JoinTable,
+} from 'typeorm'
 import encry from '../../utils/crypto'
 import * as crypto from 'crypto'
+import { Role } from '../../role/entities/role.entity'
 
 @Entity('user')
 export class User {
@@ -20,6 +28,11 @@ export class User {
   role: string // 角色
   @Column({ nullable: true })
   salt: string // 密码盐
+  @ManyToMany(() => Role)
+  @JoinTable({
+    name: 'user_role_relation',
+  })
+  roles: Role[] // 角色关系
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date // 创建时间
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })

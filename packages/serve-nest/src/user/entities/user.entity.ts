@@ -1,4 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, PrimaryGeneratedColumn, BeforeInsert } from 'typeorm'
+import encry from '../../utils/crypto'
+import * as crypto from 'crypto'
 
 @Entity('user')
 export class User {
@@ -22,4 +24,9 @@ export class User {
   created_at: Date // 创建时间
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   updated_at: Date // 更新时间
+  @BeforeInsert()
+  beforeInsert() {
+    this.salt = crypto.randomBytes(4).toString('base64')
+    this.password = encry(this.password, this.salt)
+  }
 }

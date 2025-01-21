@@ -1,37 +1,38 @@
 import {
-  ArgumentsHost,
-  Catch,
   ExceptionFilter,
+  Catch,
+  ArgumentsHost,
   HttpException,
 } from '@nestjs/common'
 import { Request, Response } from 'express'
 import { ApiException } from './api.exception'
-
+import { ApiResponseCode } from '../../enums/api-response-code.enum'
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
   catch(exception: HttpException, host: ArgumentsHost) {
     const ctx = host.switchToHttp()
     const response = ctx.getResponse<Response>()
-    const request = ctx.getRequest<Request>()
-    const status = exception.getStatus()
-    const message = exception.message
 
-    // 判断exception是否在 ApiException 原型链上来确定是调用的是 ApiException 还是 HttpException
+    const status = exception.getStatus()
     if (exception instanceof ApiException) {
       response.status(status).json({
         code: exception.getErrorCode(),
-        timestamp: new Date().toISOString(),
-        path: request.url,
-        message: exception.getErrorMessage(),
+        describe: exception.getErrorMessage(),
       })
       return
     }
 
+    if (Array.isArray((exception.getResponse() as any).message)) {
+      response.status(200).json({
+        code: ApiResponseCode.COMMON_CODE,
+        describe: (exception.getResponse() as any).message,
+      })
+      return
+    }
     response.status(status).json({
       code: status,
-      timestamp: new Date().toISOString(),
-      path: request.url,
-      message: message,
+      describe:
+        (exception.getResponse() as any).message || exception.getResponse(),
     })
   }
 }

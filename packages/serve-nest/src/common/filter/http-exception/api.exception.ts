@@ -14,11 +14,9 @@ export class ApiException extends HttpException {
     this.errorMessage = errorMessage
     this.errorCode = errorCode
   }
-
   getErrorCode(): ApiResponseCode {
     return this.errorCode
   }
-
   getErrorMessage(): string {
     return this.errorMessage
   }

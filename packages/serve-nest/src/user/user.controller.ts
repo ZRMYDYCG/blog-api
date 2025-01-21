@@ -39,4 +39,10 @@ export class UserController {
   login(@Body() LoginDto: LoginDto) {
     return this.userService.login(LoginDto)
   }
+
+  @Public()
+  @Get('captcha')
+  getCaptcha() {
+    return this.userService.getCaptcha()
+  }
 }

@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { User } from './entities/user.entity'
 import { APP_GUARD } from '@nestjs/core'
 import { UserGuard } from './user.guard'
+import { CacheModule } from '../cache/cache.module'
 
 @Module({
   controllers: [UserController],
@@ -15,6 +16,6 @@ import { UserGuard } from './user.guard'
       useClass: UserGuard,
     },
   ],
-  imports: [TypeOrmModule.forFeature([User])],
+  imports: [TypeOrmModule.forFeature([User]), CacheModule],
 })
 export class UserModule {}

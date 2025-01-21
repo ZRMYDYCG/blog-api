@@ -1,0 +1,15 @@
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common'
+import { CacheService } from './cache.service'
+import { CreateCacheDto } from './dto/create-cache.dto'
+import { UpdateCacheDto } from './dto/update-cache.dto'
+
+@Controller('cache')
+export class CacheController {}

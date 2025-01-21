@@ -7,6 +7,7 @@ import { User } from './user/entities/user.entity'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import * as path from 'path'
 import { JwtModule } from '@nestjs/jwt'
+import { CacheModule } from './cache/cache.module';
 
 const isProd = process.env.NODE_ENV === 'production'
 
@@ -49,6 +50,7 @@ const isProd = process.env.NODE_ENV === 'production'
         }
       },
     }),
+    CacheModule,
   ],
   controllers: [AppController],
   providers: [AppService],

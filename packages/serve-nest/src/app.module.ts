@@ -19,6 +19,7 @@ import { RoleModule } from './role/role.module'
 import { CategoryModule } from './category/category.module'
 import { TagModule } from './tag/tag.module'
 import { CommentModule } from './comment/comment.module'
+import { ArticleModule } from './article/article.module'
 
 const isProd = process.env.NODE_ENV === 'production'
 
@@ -67,6 +68,7 @@ const isProd = process.env.NODE_ENV === 'production'
     CategoryModule,
     TagModule,
     CommentModule,
+    ArticleModule,
   ],
   controllers: [AppController],
   providers: [AppService],

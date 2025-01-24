@@ -3,9 +3,9 @@ import {
   PrimaryGeneratedColumn,
   Column,
   ManyToOne,
-  JoinColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  JoinColumn,
 } from 'typeorm'
 import { Article } from '../../article/entities/article.entity'
 
@@ -14,7 +14,9 @@ export class Comment {
   @PrimaryGeneratedColumn()
   id: number
 
-  @ManyToOne((type) => Article, (article) => article.comments)
+  @ManyToOne((type) => Article, (article) => article.comments, {
+    nullable: false,
+  })
   @JoinColumn({ name: 'articleId' })
   article: Article
 
@@ -24,14 +26,14 @@ export class Comment {
   @Column({ type: 'text' })
   content: string
 
-  @Column({ nullable: true })
-  parentId?: number
-
   @Column({ type: 'boolean', default: true })
   isActive: boolean
 
   @Column({ type: 'boolean', default: false })
   isDeleted: boolean
+
+  @Column({ nullable: true })
+  parentId?: number
 
   @CreateDateColumn()
   createdAt: Date

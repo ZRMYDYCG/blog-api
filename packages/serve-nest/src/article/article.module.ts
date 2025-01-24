@@ -8,5 +8,6 @@ import { ArticleController } from './article.controller'
   imports: [TypeOrmModule.forFeature([Article])],
   providers: [ArticleService],
   controllers: [ArticleController],
+  exports: [TypeOrmModule],
 })
 export class ArticleModule {}

@@ -2,35 +2,42 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  ManyToMany,
+  ManyToOne,
   CreateDateColumn,
   UpdateDateColumn,
+  JoinColumn,
 } from 'typeorm'
 import { Article } from '../../article/entities/article.entity'
 
 @Entity()
-export class Tag {
+export class Comment {
   @PrimaryGeneratedColumn()
   id: number
 
+  @ManyToOne((type) => Article, (article) => article.comments, {
+    nullable: false,
+  })
+  @JoinColumn({ name: 'articleId' })
+  article: Article
+
   @Column()
-  name: string
+  author: string
 
-  @Column({ nullable: true })
-  description?: string
-
-  @ManyToMany((type) => Article, (article) => article.tags)
-  articles: Article[]
-
-  @CreateDateColumn()
-  createdAt: Date
-
-  @UpdateDateColumn()
-  updatedAt: Date
+  @Column({ type: 'text' })
+  content: string
 
   @Column({ type: 'boolean', default: true })
   isActive: boolean
 
   @Column({ type: 'boolean', default: false })
   isDeleted: boolean
+
+  @Column({ nullable: true })
+  parentId?: number
+
+  @CreateDateColumn()
+  createdAt: Date
+
+  @UpdateDateColumn()
+  updatedAt: Date
 }

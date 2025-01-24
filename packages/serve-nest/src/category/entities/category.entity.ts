@@ -19,6 +19,9 @@ export class Category {
   @Column({ nullable: true })
   description?: string
 
+  @Column({ default: false })
+  isDeleted: boolean
+
   @ManyToMany((type) => Article, (article) => article.categories)
   articles: Article[]
 

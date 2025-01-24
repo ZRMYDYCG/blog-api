@@ -1,7 +1,7 @@
 import {
   Entity,
-  Column,
   PrimaryGeneratedColumn,
+  Column,
   ManyToMany,
   CreateDateColumn,
   UpdateDateColumn,
@@ -27,4 +27,10 @@ export class Tag {
 
   @UpdateDateColumn()
   updatedAt: Date
+
+  @Column({ type: 'boolean', default: true })
+  isActive: boolean
+
+  @Column({ type: 'boolean', default: false })
+  isDeleted: boolean
 }

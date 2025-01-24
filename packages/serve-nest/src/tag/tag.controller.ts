@@ -12,12 +12,14 @@ import { CreateTagDto } from './dto/create-tag.dto'
 import { UpdateTagDto } from './dto/update-tag.dto'
 import { ApiException } from '../common/filter/http-exception/api.exception'
 import { ApiResponseCode } from '../common/enums/api-response-code.enum'
+import { Public } from '../public/public.decorator'
 
 @ApiTags('标签管理')
 @Controller('tags')
 export class TagController {
   constructor(private readonly tagService: TagService) {}
 
+  @Public()
   @ApiOperation({ summary: '获取所有标签' })
   @ApiResponse({ status: 200, description: '成功获取标签列表', type: [Tag] })
   @Get()
@@ -25,6 +27,7 @@ export class TagController {
     return await this.tagService.findAll()
   }
 
+  @Public()
   @ApiOperation({ summary: '获取单个标签' })
   @ApiResponse({ status: 200, description: '成功获取标签', type: Tag })
   @ApiResponse({ status: 404, description: '标签不存在', type: ApiException })
@@ -34,6 +37,7 @@ export class TagController {
     return await this.tagService.findOne(id)
   }
 
+  @Public()
   @ApiOperation({ summary: '创建新标签' })
   @ApiResponse({ status: 201, description: '成功创建标签', type: Tag })
   @ApiBody({ type: CreateTagDto })
@@ -42,6 +46,7 @@ export class TagController {
     return await this.tagService.create(createTagDto)
   }
 
+  @Public()
   @ApiOperation({ summary: '更新标签' })
   @ApiResponse({ status: 200, description: '成功更新标签', type: Tag })
   @ApiResponse({ status: 404, description: '标签不存在', type: ApiException })
@@ -55,6 +60,7 @@ export class TagController {
     return await this.tagService.update(id, updateTagDto)
   }
 
+  @Public()
   @ApiOperation({ summary: '删除标签' })
   @ApiResponse({ status: 200, description: '成功删除标签' })
   @ApiResponse({ status: 404, description: '标签不存在', type: ApiException })
@@ -64,6 +70,7 @@ export class TagController {
     return await this.tagService.delete(id)
   }
 
+  @Public()
   @ApiOperation({ summary: '恢复标签' })
   @ApiResponse({ status: 200, description: '成功恢复标签' })
   @ApiResponse({ status: 404, description: '标签不存在', type: ApiException })

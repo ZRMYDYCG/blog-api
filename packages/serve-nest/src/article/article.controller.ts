@@ -50,19 +50,19 @@ export class ArticleController {
     return await this.articleService.create(createArticleDto)
   }
 
-  @Public()
-  @ApiOperation({ summary: '更新文章' })
-  @ApiResponse({ status: 200, description: '成功更新文章', type: Article })
-  @ApiResponse({ status: 404, description: '文章不存在', type: ApiException })
-  @ApiParam({ name: 'id', description: '文章ID', type: Number })
-  @ApiBody({ type: UpdateArticleDto })
-  @Put(':id')
-  async update(
-    @Param('id') id: number,
-    @Body() updateArticleDto: UpdateArticleDto,
-  ): Promise<Article> {
-    return await this.articleService.update(id, updateArticleDto)
-  }
+  // @Public()
+  // @ApiOperation({ summary: '更新文章' })
+  // @ApiResponse({ status: 200, description: '成功更新文章', type: Article })
+  // @ApiResponse({ status: 404, description: '文章不存在', type: ApiException })
+  // @ApiParam({ name: 'id', description: '文章ID', type: Number })
+  // @ApiBody({ type: UpdateArticleDto })
+  // @Put(':id')
+  // async update(
+  //   @Param('id') id: number,
+  //   @Body() updateArticleDto: UpdateArticleDto,
+  // ): Promise<Article> {
+  //   return await this.articleService.update(id, updateArticleDto)
+  // }
 
   @Public()
   @ApiOperation({ summary: '删除文章' })

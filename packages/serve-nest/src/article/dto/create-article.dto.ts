@@ -1,28 +1,44 @@
-import { IsString, IsNotEmpty, IsOptional } from 'class-validator'
+import {
+  IsNotEmpty,
+  IsString,
+  IsOptional,
+  IsBoolean,
+  IsNumber,
+  IsArray,
+} from 'class-validator'
 
 export class CreateArticleDto {
-  @IsString()
   @IsNotEmpty()
+  @IsString()
   title: string
 
-  @IsString()
   @IsNotEmpty()
+  @IsString()
   content: string
 
-  @IsString()
   @IsNotEmpty()
+  @IsString()
   author: string
 
-  @IsString()
   @IsOptional()
+  @IsString()
   coverImage?: string
 
   @IsOptional()
-  categories?: any[]
+  @IsBoolean()
+  isActive?: boolean
+
+  @IsNotEmpty()
+  @IsNumber()
+  categoryId: number
+
+  @IsNotEmpty()
+  @IsArray()
+  @IsNumber({}, { each: true })
+  tagIds: number[]
 
   @IsOptional()
-  tags?: any[]
-
-  @IsOptional()
-  comments?: any[]
+  @IsArray()
+  @IsString({ each: true })
+  newTagNames?: string[]
 }

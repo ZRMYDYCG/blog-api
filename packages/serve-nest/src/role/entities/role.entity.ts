@@ -8,37 +8,62 @@ import {
   UpdateDateColumn,
 } from 'typeorm'
 import { Menu } from '../../menu/entities/menu.entity'
+import * as moment from 'moment'
 
 @Entity('role')
 export class Role {
-  @PrimaryGeneratedColumn({
-    type: 'bigint',
-  })
+  @PrimaryGeneratedColumn()
   id: number
+  //角色名
   @Column({
     length: 20,
   })
-  role_name: string // 角色名
+  role_name: string
+  //排序
   @Column()
-  role_sort: number // 角色排序
+  role_sort: number
+  //角色状态 启用:1 关闭:0
   @Column({
     default: 1,
   })
-  status: number // 角色状态（1正常 0停用）
-  @Column({
-    length: 100,
-    nullable: true,
+  status: number
+  //备注
+  @Column({ length: '100', nullable: true })
+  remark: string
+  //创建人Id
+  @Column()
+  create_by: number
+  //更新人Id
+  @Column()
+  update_by: number
+
+  @CreateDateColumn({
+    transformer: {
+      to: (value) => {
+        return value
+      },
+      from: (value) => {
+        return moment(value).format('YYYY-MM-DD HH:mm:ss')
+      },
+    },
   })
-  remark: string // 角色备注
-  @Column({
-    type: 'bigint',
+  create_time: Date
+
+  @UpdateDateColumn({
+    transformer: {
+      to: (value) => {
+        return value
+      },
+      from: (value) => {
+        return moment(value).format('YYYY-MM-DD HH:mm:ss')
+      },
+    },
   })
-  update_by: number // 更新者Id
-  @CreateDateColumn()
-  create_time: Date // 创建时间
+  update_time: Date
+
   @ManyToMany(() => Menu)
   @JoinTable({
-    name: 'role_menu_relation',
+    name: 'menu_role_relation',
   })
   menus: Menu[]
 }

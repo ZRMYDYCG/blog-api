@@ -6,12 +6,19 @@ import { UserModule } from './user/user.module'
 import { User } from './user/entities/user.entity'
 import { Menu } from './menu/entities/menu.entity'
 import { Role } from './role/entities/role.entity'
+import { Article } from './article/entities/article.entity'
+import { Comment } from './comment/entities/comment.entity'
+import { Category } from './category/entities/category.entity'
+import { Tag } from './tag/entities/tag.entity'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import * as path from 'path'
 import { JwtModule } from '@nestjs/jwt'
 import { CacheModule } from './cache/cache.module'
 import { MenuModule } from './menu/menu.module'
 import { RoleModule } from './role/role.module'
+import { CategoryModule } from './category/category.module'
+import { TagModule } from './tag/tag.module'
+import { CommentModule } from './comment/comment.module'
 
 const isProd = process.env.NODE_ENV === 'production'
 
@@ -36,7 +43,7 @@ const isProd = process.env.NODE_ENV === 'production'
           username: configService.get('DB_USERNAME'), // 用户名
           password: configService.get('DB_PASSWORD'), // 密码
           database: configService.get('DB_DATABASE'), // 数据库名
-          entities: [User, Menu, Role], // 数据库对应的Entity
+          entities: [User, Menu, Role, Article, Comment, Category, Tag], // 数据库对应的Entity
           autoLoadEntities: true, // 自动加载实体
           synchronize: !isProd, // 是否自动同步实体文件,生产环境下关闭
         }
@@ -57,6 +64,9 @@ const isProd = process.env.NODE_ENV === 'production'
     CacheModule,
     MenuModule,
     RoleModule,
+    CategoryModule,
+    TagModule,
+    CommentModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,10 +1,20 @@
-import { Controller, Get, Post, Put, Delete, Body, Param } from '@nestjs/common'
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Body,
+  Param,
+  Query,
+} from '@nestjs/common'
 import {
   ApiTags,
   ApiOperation,
   ApiResponse,
   ApiBody,
   ApiParam,
+  ApiQuery,
 } from '@nestjs/swagger'
 import { Article } from './entities/article.entity'
 import { ArticleService } from './article.service'
@@ -13,6 +23,8 @@ import { UpdateArticleDto } from './dto/update-article.dto'
 import { ApiException } from '../common/filter/http-exception/api.exception'
 import { ApiResponseCode } from '../common/enums/api-response-code.enum'
 import { Public } from '../public/public.decorator'
+import { PaginatedResponse } from '../common/interfaces/paginated-response'
+import { PaginationDto } from './dto/article-pagination.dto'
 
 @ApiTags('文章管理')
 @Controller('articles')
@@ -24,11 +36,24 @@ export class ArticleController {
   @ApiResponse({
     status: 200,
     description: '成功获取文章列表',
-    type: [Article],
+  })
+  @ApiQuery({
+    name: 'page',
+    description: '当前页码',
+    required: false,
+    type: Number,
+  })
+  @ApiQuery({
+    name: 'size',
+    description: '每页大小',
+    required: false,
+    type: Number,
   })
   @Get()
-  async findAll(): Promise<Article[]> {
-    return await this.articleService.findAll()
+  async findAll(
+    @Query() params: PaginationDto,
+  ): Promise<PaginatedResponse<Article>> {
+    return await this.articleService.findAll(params)
   }
 
   @Public()
@@ -50,20 +75,6 @@ export class ArticleController {
     return await this.articleService.create(createArticleDto)
   }
 
-  // @Public()
-  // @ApiOperation({ summary: '更新文章' })
-  // @ApiResponse({ status: 200, description: '成功更新文章', type: Article })
-  // @ApiResponse({ status: 404, description: '文章不存在', type: ApiException })
-  // @ApiParam({ name: 'id', description: '文章ID', type: Number })
-  // @ApiBody({ type: UpdateArticleDto })
-  // @Put(':id')
-  // async update(
-  //   @Param('id') id: number,
-  //   @Body() updateArticleDto: UpdateArticleDto,
-  // ): Promise<Article> {
-  //   return await this.articleService.update(id, updateArticleDto)
-  // }
-
   @Public()
   @ApiOperation({ summary: '删除文章' })
   @ApiResponse({ status: 200, description: '成功删除文章' })
@@ -71,7 +82,7 @@ export class ArticleController {
   @ApiParam({ name: 'id', description: '文章ID', type: Number })
   @Delete(':id')
   async delete(@Param('id') id: number): Promise<void> {
-    return await this.articleService.delete(id)
+    await this.articleService.delete(id)
   }
 
   @Public()
@@ -81,6 +92,6 @@ export class ArticleController {
   @ApiParam({ name: 'id', description: '文章ID', type: Number })
   @Put(':id/restore')
   async restore(@Param('id') id: number): Promise<void> {
-    return await this.articleService.restore(id)
+    await this.articleService.restore(id)
   }
 }

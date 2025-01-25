@@ -8,6 +8,8 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { In, Repository } from 'typeorm'
 import { ApiException } from '../common/filter/http-exception/api.exception'
 import { ApiResponseCode } from '../common/enums/api-response-code.enum'
+import { PaginatedResponse } from '../common/interfaces/paginated-response'
+import { PaginationDto } from './dto/article-pagination.dto'
 
 @Injectable()
 export class ArticleService {
@@ -68,11 +70,25 @@ export class ArticleService {
     }
   }
 
-  async findAll(): Promise<Article[]> {
-    try {
-      return await this.articleRepository.find({ where: { isDeleted: false } })
-    } catch (error) {
-      throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR)
+  async findAll(
+    paginationDto: PaginationDto,
+  ): Promise<PaginatedResponse<Article>> {
+    const { page = 1, size = 10 } = paginationDto
+    const [articles, total] = await this.articleRepository.findAndCount({
+      where: { isDeleted: false },
+      skip: (page - 1) * size,
+      take: size,
+      relations: ['categories', 'tags'],
+    })
+
+    return {
+      data: articles,
+      meta: {
+        total,
+        size: Number(size),
+        current: Number(page),
+        totalPages: Math.ceil(total / size),
+      },
     }
   }
 

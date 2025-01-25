@@ -1,6 +1,3 @@
-/**
- * @description: 响应结果拦截器
- * */
 import {
   Injectable,
   NestInterceptor,
@@ -27,7 +24,7 @@ export class TransformInterceptor<T>
           const paginatedData = data as PaginatedResponse<T>
           return {
             code: 200,
-            data: paginatedData.data,
+            data: paginatedData,
             describe: '请求成功',
           }
         } else {
